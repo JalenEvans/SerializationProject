@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SerializationProject.iml" filepath="$PROJECT_DIR$/.idea/SerializationProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SerializationProject2.0.iml" filepath="$PROJECT_DIR$/SerializationProject2.0.iml" />
     </modules>
   </component>
 </project>
