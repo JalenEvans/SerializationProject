@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
-public class Pokemon {
+public class Pokemon implements Comparable <Pokemon> {
 
     //Declaring the descriptive variables for the Pokemon object
     private final int level;
@@ -25,7 +26,7 @@ public class Pokemon {
     }
 
     //Method that writes the components of the object to a csv file
-    public static void serializeToCSV(Pokemon pokemon, String filename)
+    public void serializeToCSV(Pokemon pokemon, String filename)
             throws IOException {
 
         String attributes = pokemon.printForCSV();
@@ -43,18 +44,16 @@ public class Pokemon {
     public static String readFile(String filename) throws IOException {
 
         Path pokedex = Paths.get(filename);
-        String attributes = Files.readAllLines(pokedex).get(0);
-        return attributes;
+        return Files.readAllLines(pokedex).get(0);
 
     }
 
     //Takes the data from PokeDex.csv and then applies it to another new object
-    public static Pokemon deserializePokemon(String filename) throws IOException {
+    public Pokemon deserializePokemon(String filename) throws IOException {
 
         String data = readFile(filename);
         String[] dataParts = data.split(",");
-        Pokemon pokemon = new Pokemon(Integer.parseInt(dataParts[0]), dataParts[1], Double.parseDouble(dataParts[2]), Double.parseDouble(dataParts[3]));
-        return pokemon;
+        return new Pokemon(Integer.parseInt(dataParts[0]), dataParts[1], Double.parseDouble(dataParts[2]), Double.parseDouble(dataParts[3]));
 
     }
 
@@ -63,22 +62,43 @@ public class Pokemon {
         return "" + level + "," + type + "," + height + "," + weight;
     }
 
-    public boolean equals(Object poke) {
+    //Checks to see if the new Pokemon object is equal to the original one
+    public boolean equals (Object poke) {
 
-        String[] ogPokemon = printForCSV().split(",");
-
-        Pokemon newPoke = (Pokemon) poke;
-
-        String[] newPokemon = newPoke.printForCSV().split(",");
-
-        for (int i = 0; i < ogPokemon.length; i++) {
-            if (!(ogPokemon[i].equals(newPokemon[i]))) {
-                System.out.println("Not Equal!");
-                return false;
-            }
+        if (poke == this) {
+            return true;
         }
 
-        System.out.println("Equal!");
-        return true;
+        if (!(poke instanceof Pokemon)) {
+            return false;
+        }
+
+        Pokemon other = (Pokemon) poke;
+
+        boolean typeEquals = (this.type == null & other.type == null) || (this.type != null && other.type.equals(this.type));
+
+        return (this.level == other.level && this.height == other.height) && (this.weight == other.weight && typeEquals);
     }
+    //Getters
+    public int getLevel() {
+        return level;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    @Override
+    public int compareTo(Pokemon o) {
+        return 0;
+    }
+
 }
