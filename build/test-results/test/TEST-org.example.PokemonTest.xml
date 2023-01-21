@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.example.PokemonTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2022-12-30T00:31:11" hostname="NISSANALTIMA" time="0.014">
+<testsuite name="org.example.PokemonTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-21T00:47:35" hostname="NISSANALTIMA" time="0.009">
   <properties/>
-  <testcase name="heightEqual()" classname="org.example.PokemonTest" time="0.012"/>
-  <testcase name="WeightEqual()" classname="org.example.PokemonTest" time="0.0"/>
-  <testcase name="levelEqual()" classname="org.example.PokemonTest" time="0.001"/>
-  <testcase name="typeEqual()" classname="org.example.PokemonTest" time="0.0"/>
+  <testcase name="pokeListEquals()" classname="org.example.PokemonTest" time="0.009"/>
   <system-out><![CDATA[Starting all JUnit Tests...
-All tests successful.
+break
+13,water,0.5,9.0
+11,fire,0.6,8.5
+12,grass,0.7,6.9
+13,water,0.5,9.0
+11,fire,0.6,8.5
+12,grass,0.7,6.9
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

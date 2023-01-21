@@ -3,53 +3,56 @@ package org.example;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PokemonTest {
 
-    public static Pokemon pokemon;
-    public static Pokemon pokemon2;
+    public static List<Pokemon> pokeList = new ArrayList<>();;
+    public static List<Pokemon> newPokeList = new ArrayList<>();;
 
     @BeforeAll
     public static void setup()
             throws IOException {
         System.out.println("Starting all JUnit Tests...");
-        pokemon = new Pokemon(11, "fire", 11.3, 15.6);
-        pokemon.serializeToCSV(pokemon, "./csvFiles/PokeDex.csv");
-        pokemon2 = pokemon.deserializePokemon("./csvFiles/PokeDex.csv");
+
+        Pokemon charmander = new Pokemon(11, "fire", 0.6, 8.5);
+        Pokemon squirtle = new Pokemon(13, "water", 0.5, 9.0);
+        Pokemon bulbasaur = new Pokemon(12, "grass", 0.7, 6.9);
+        Pokemon arceus = new Pokemon(80, "normal", 3.2, 320.0);
+
+        pokeList.add(charmander);
+        pokeList.add(squirtle);
+        pokeList.add(bulbasaur);
+
+        Collections.sort(pokeList);
+
+        Pokemon.serializeToCSV(pokeList, "./csvFiles/PokeDex.csv");
+        System.out.println("break");
+        newPokeList = Pokemon.deserializePokemon("./csvFiles/PokeDex.csv");
+        //newPokeList.add(arceus);
     }
 
     @Test
-    public void levelEqual() {
-        int expectedLevel = pokemon.getLevel();
-        int actualLevel = pokemon2.getLevel();
-        assertEquals(expectedLevel, actualLevel);
+    public void pokeListEquals() {
+        List<Pokemon> expectedList = new ArrayList<>();
+        expectedList = pokeList;
+
+        for (Pokemon poke : pokeList) {
+            System.out.println(poke.printToCSV());
+        }
+
+        List<Pokemon> actualList = new ArrayList<>();
+        actualList = newPokeList;
+
+        for (Pokemon poke : newPokeList) {
+            System.out.println(poke.printToCSV());
+        }
+
+        assertEquals(expectedList, actualList);
     }
 
-    @Test
-    public void typeEqual() {
-        String expectedType = pokemon.getType();
-        String actualType = pokemon2.getType();
-        assertEquals(expectedType, actualType);
-    }
-
-    @Test
-    public void heightEqual() {
-        double expectedHeight = pokemon.getHeight();
-        double actualHeight = pokemon2.getHeight();
-        assertEquals(expectedHeight, actualHeight);
-    }
-
-    @Test
-    public void WeightEqual() {
-        double expectedWeight = pokemon.getWeight();
-        double actualWeight = pokemon2.getWeight();
-        assertEquals(expectedWeight, actualWeight);
-    }
-
-    @AfterAll
-    public static void done() {
-        System.out.println("All tests successful.");
-    }
 }
