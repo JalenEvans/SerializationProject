@@ -144,7 +144,38 @@ public class Pokemon implements Comparable <Pokemon> {
 
     @Override
     public int compareTo(Pokemon other) {
-        return (Double.compare(this.height, other.height)) - (Integer.compare(this.level, other.level));
+
+        boolean one =
+                //True if both weight and height are greater
+                ((Double.compare(this.weight, other.weight)) == 1) && ((Double.compare(this.height, other.height)) == 1) ||
+                //True if weight is greater but height is equal
+                ((Double.compare(this.weight, other.weight)) == 1) && ((Double.compare(this.height, other.height)) == 0) ||
+                //True if weight is equal but height is greater
+                ((Double.compare(this.weight, other.weight)) == 0) && ((Double.compare(this.height, other.height)) == 1);
+
+        boolean negativeOne =
+                //True if weight is equal but height is less
+                ((Double.compare(this.weight, other.weight)) == 0) && ((Double.compare(this.height, other.height)) == -1) ||
+                //True if weight is less but height is equal
+                ((Double.compare(this.weight, other.weight)) == -1) && ((Double.compare(this.height, other.height)) == 0) ||
+                //True if weight is less but height is less
+                ((Double.compare(this.weight, other.weight)) == -1) && ((Double.compare(this.height, other.height)) == -1);
+
+        System.out.println(one + " + " + negativeOne);
+
+        if (one) {
+            return 1;
+        }
+        else if (negativeOne) {
+            return -1;
+        }
+        else {
+            //True if both weight and height are equal
+            //True if weight is greater but height is less
+            //True if weight is less but height is greater
+            return 0;
+        }
+//        return Double.compare(this.weight, other.weight);
     }
 
 }

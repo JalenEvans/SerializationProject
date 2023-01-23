@@ -27,6 +27,7 @@ public class PokemonTest {
         pokeList.add(charmander);
         pokeList.add(squirtle);
         pokeList.add(bulbasaur);
+        pokeList.add(arceus);
 
         Collections.sort(pokeList);
 
