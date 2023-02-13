@@ -1,6 +1,7 @@
 package org.example;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,8 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PokemonTest {
 
-    public static List<Pokemon> pokeList = new ArrayList<>();;
-    public static List<Pokemon> newPokeList = new ArrayList<>();;
+    public static List<Pokemon> pokeList = new ArrayList<>();
+
+    public static List<Pokemon> newPokeList = new ArrayList<>();
+
 
     @BeforeAll
     public static void setup()

@@ -8,9 +8,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-public class Pokemon implements Comparable <Pokemon> {
+public class Pokemon implements Comparable<Pokemon> {
 
     //Declaring the descriptive variables for the Pokemon object
     private final int level;
@@ -19,7 +18,7 @@ public class Pokemon implements Comparable <Pokemon> {
     private final double weight;
 
     private Pokemon() {
-        this(0, "", 0.0,0.0);
+        this(0, "", 0.0, 0.0);
     }
 
     public Pokemon(int level, String type, double height, double weight) {
@@ -30,17 +29,6 @@ public class Pokemon implements Comparable <Pokemon> {
         this.height = height;
         this.weight = weight;
 
-    }
-
-    //Converts object's attributes into a byte array
-    public static byte[] objectToBytes(Pokemon pokemon) {
-
-        //Separates the values of the pokemon object into comma separated values (csv)
-        String attributes = ("" + pokemon.getLevel() + "," + pokemon.getType() + "," + pokemon.getHeight() + "," + pokemon.getWeight());
-
-        byte[] strToBytes = attributes.getBytes();
-
-        return strToBytes;
     }
 
     //Method that writes the components of the object to a csv file
@@ -57,23 +45,20 @@ public class Pokemon implements Comparable <Pokemon> {
         byte[] blankBytes = blank.getBytes();
 
         //Clears the csv file
-        Files.write(pokedex, blankBytes);
+        Files.write(pokedex, "".getBytes());
 
         Collections.sort(pokeList);
 
         //Writes the attributes of the different objects in the list to file
-        for (int i = 0; i < pokeList.size(); i++) {
-            Files.write(pokedex, objectToBytes(pokeList.get(i)), StandardOpenOption.APPEND);
-            if (i != (pokeList.size() - 1)) {
-                Files.write(pokedex, byteLine, StandardOpenOption.APPEND);
-            }
+        for (Pokemon poke : pokeList) {
+            Files.write(pokedex, poke.printToCSV().getBytes(), StandardOpenOption.APPEND);
         }
 
     }
 
     //Counts the amount of lines in a file
     public static int countLines(String filename)
-        throws IOException {
+            throws IOException {
 
         Path pokedex = Paths.get(filename);
 
@@ -89,27 +74,26 @@ public class Pokemon implements Comparable <Pokemon> {
 
         Path pokedex = Paths.get(filename);
 
-        String data = "";
+        List<String> data = Files.readAllLines(pokedex);
 
         String[] dataParts = {};
 
-        for (int i = 0; i < countLines(filename); i++) {
-            data = Files.readAllLines(pokedex).get(i);
-            dataParts = data.split(",");
+        for (String line : data) {
+            dataParts = line.split(",");
 
-            pokeList.add(new Pokemon(Integer.parseInt(dataParts[0]), dataParts[1], Double.parseDouble(dataParts[2]), Double.parseDouble(dataParts[3])));
+            pokeList.add(new Pokemon(Integer.parseInt(dataParts[0].trim()), dataParts[1].trim(), Double.parseDouble(dataParts[2].trim()), Double.parseDouble(dataParts[3].trim())));
         }
 
         return pokeList;
     }
 
-    public String printToCSV () {
-        return ("" + level + "," + type + "," + height + "," + weight);
+    public String printToCSV() {
+        return ("" + level + "," + type + "," + height + "," + weight + "\n");
     }
 
     //Checks to see if the new Pokemon object is equal to the original one
     @Override
-    public boolean equals (Object poke) {
+    public boolean equals(Object poke) {
 
         if (poke == this) {
             return true;
@@ -125,6 +109,7 @@ public class Pokemon implements Comparable <Pokemon> {
 
         return ((this.level == other.level) && (this.height == other.height)) && ((this.weight == other.weight) && typeEquals);
     }
+
     //Getters
     public int getLevel() {
         return level;
@@ -143,39 +128,26 @@ public class Pokemon implements Comparable <Pokemon> {
     }
 
     @Override
-    public int compareTo(Pokemon other) {
+    public int compareTo (Pokemon other) {
 
-        boolean one =
-                //True if both weight and height are greater
-                ((Double.compare(this.weight, other.weight)) == 1) && ((Double.compare(this.height, other.height)) == 1) ||
-                //True if weight is greater but height is equal
-                ((Double.compare(this.weight, other.weight)) == 1) && ((Double.compare(this.height, other.height)) == 0) ||
-                //True if weight is equal but height is greater
-                ((Double.compare(this.weight, other.weight)) == 0) && ((Double.compare(this.height, other.height)) == 1);
+        boolean same =
+                ((Double.compare(this.weight, other.weight)) == 0) &&
+                        ((Double.compare(this.height, other.height)) == 0);
 
-        boolean negativeOne =
-                //True if weight is equal but height is less
-                ((Double.compare(this.weight, other.weight)) == 0) && ((Double.compare(this.height, other.height)) == -1) ||
-                //True if weight is less but height is equal
-                ((Double.compare(this.weight, other.weight)) == -1) && ((Double.compare(this.height, other.height)) == 0) ||
-                //True if weight is less but height is less
-                ((Double.compare(this.weight, other.weight)) == -1) && ((Double.compare(this.height, other.height)) == -1);
+        boolean greater =
+                ((Double.compare(this.weight, other.weight)) >= 0) &&
+                        ((Double.compare(this.height, other.height)) >= 0);
 
-        System.out.println(one + " + " + negativeOne);
+        System.out.println(greater + " " + same);
 
-        if (one) {
-            return 1;
-        }
-        else if (negativeOne) {
-            return -1;
-        }
-        else {
-            //True if both weight and height are equal
-            //True if weight is greater but height is less
-            //True if weight is less but height is greater
-            return 0;
-        }
-//        return Double.compare(this.weight, other.weight);
+        return same ? 0 : greater ? 1 : -1;
     }
+
+//    @Override
+//    public int compareTo (Pokemon other) {
+//        return Double.compare(this.height, other.height);
+//    }
+
+
 
 }

@@ -4,4 +4,6 @@
 
 .gradle/
 
-build/
+build/.idea/
+
+*.txt
